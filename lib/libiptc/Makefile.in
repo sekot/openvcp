@@ -1,0 +1,29 @@
+prefix = @prefix@
+bindir = @bindir@
+datadir = @datarootdir@
+sysconfdir = @sysconfdir@
+
+CC=@CC@
+CFLAGS=@CFLAGS@ @DEFS@ -D_LARGEFILE_SOURCE=1 -D_LARGE_FILES -D_FILE_OFFSET_BITS=64 -D_REENTRANT -Wall -Waggregate-return -Wmissing-declarations -Wmissing-prototypes -Wredundant-decls -Wshadow -Wstrict-prototypes -Winline -pipe -DXTABLES_LIBDIR=\"/usr/local/libexec/xtables\" -DXTABLES_INTERNAL -I. -I.. -g -O2
+LDFLAGS=@LDFLAGS@ 
+LIBS=@LIBS@
+
+
+all: libiptc.la
+
+libiptc.la: libip4tc.o libip6tc.o
+	libtool --tag=CC   --mode=link $(CC) $(CFLAGS) -version-info 0:0:0  -o libiptc.la -rpath /usr/local/lib libip4tc.lo libip6tc.lo  
+
+libip4tc.o:
+	libtool --tag=CC   --mode=compile $(CC) -DHAVE_CONFIG_H $(CFLAGS) -MT libip4tc.lo -MD -MP -MF libip4tc.Tpo -c -o libip4tc.lo libip4tc.c &&\mv -f libip4tc.Tpo libip4tc.Plo
+	$(CC) -DHAVE_CONFIG_H $(CFLAGS) -MT libip4tc.lo -MD -MP -MF libip4tc.Tpo -c libip4tc.c  -fPIC -DPIC -o libip4tc.o
+
+libip6tc.o:
+	libtool --tag=CC   --mode=compile $(CC) -DHAVE_CONFIG_H $(CFLAGS)  -MT libip6tc.lo -MD -MP -MF libip6tc.Tpo -c -o libip6tc.lo libip6tc.c && mv -f libip6tc.Tpo libip6tc.Plo
+	$(CC) -DHAVE_CONFIG_H $(CFLAGS) -MT libip6tc.lo -MD -MP -MF libip6tc.Tpo -c libip6tc.c  -fPIC -DPIC -o libip6tc.o
+
+
+clean:
+	@rm -f *.lo *.la *.o *.Plo *.Tpo 
+
+

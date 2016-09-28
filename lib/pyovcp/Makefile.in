@@ -1,0 +1,39 @@
+prefix = @prefix@
+bindir = @bindir@
+datadir = @datarootdir@
+sysconfdir = @sysconfdir@
+
+CC=@CC@
+CFLAGS=@CFLAGS@ @DEFS@ `python-config --cflags` -I ..
+LDFLAGS=@LDFLAGS@ 
+LIBS=@LIBS@
+
+
+OBJS=pyovcpdata.o pyovcpresponse.o pyovcprequest.o ../ovcpxml.o
+
+all: ovcp.so pyovcp.a
+
+pyovcpdata.o: pyovcpdata.c pyovcpdata.h
+	$(CC) -pthread $(CFLAGS)  -fPIC -o pyovcpdata.o -c pyovcpdata.c 
+pyovcpresponse.o: pyovcpresponse.c pyovcpresponse.h
+	$(CC) -pthread $(CFLAGS)  -fPIC -o pyovcpresponse.o -c pyovcpresponse.c 
+pyovcprequest.o: pyovcprequest.c pyovcprequest.h
+	$(CC) -pthread $(CFLAGS)  -fPIC -o pyovcprequest.o -c pyovcprequest.c 
+pyovcp.o: pyovcp.c pyovcp.h
+	$(CC) -pthread $(CFLAGS)  -D SHAREDOBJ -fPIC -o pyovcp.o -c pyovcp.c 
+spyovcp.o: pyovcp.c pyovcp.h
+	$(CC) -pthread $(CFLAGS)  -o spyovcp.o -c pyovcp.c 
+
+
+pyovcp.a: $(OBJS) spyovcp.o
+	ar cru pyovcp.a $(OBJS) spyovcp.o
+	ranlib 	pyovcp.a
+
+ovcp.so: $(OBJS) pyovcp.o 
+	$(CC) -D SHAREDOBJ -pthread -shared -Wl,-O1 -Wl,-Bsymbolic-functions -o ovcp.so $(OBJS) pyovcp.o 
+
+clean:
+	@rm -f *.lo *.la *.o *.Plo *.Tpo *.so *.a
+
+
+

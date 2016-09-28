@@ -1,0 +1,81 @@
+prefix = @prefix@
+bindir = @bindir@
+datadir = @datarootdir@
+sysconfdir = @sysconfdir@
+
+REV:=$(shell svnversion 2>/dev/null | sed 's/M//')
+CC=@CC@
+CFLAGS=@CFLAGS@ @DEFS@ -DOPENVCP_CONFIG=\"$(sysconfdir)/openvcpd.conf\" -DOPENVCP_DATA=\"$(datadir)/openvcpd\" -Ilib/ -Isrc/ -rdynamic -DREVISION=\"$(REV)\" `python-config --cflags`
+LDFLAGS=@LDFLAGS@
+LIBS=@LIBS@ `python-config --ldflags`
+
+OBJECTS = lib/libiptc/libip6tc.o lib/libiptc/libip4tc.o src/modules.o src/misc.o src/node.o src/traffic.o src/logtraffic.o src/setup.o src/move.o src/set.o src/parseconfig.o src/get.o src/request.o lib/fs.o lib/strings.o lib/ovcpxml.o src/filter.o src/bandwidth.o src/trafficlimit.o src/userbackup.o src/task.o
+
+all: openvcpd lib/pyovcp/ovcp.so
+openvcpd: src/main.c $(OBJECTS) lib/pyovcp/pyovcp.a
+	$(CC) $(CFLAGS) -o openvcpd src/main.c $(OBJECTS) $(LIBS) lib/pyovcp/pyovcp.a
+
+src/modules.o: src/modules.c
+src/parseconfig.o: src/parseconfig.c
+src/misc.o: src/misc.c
+src/request.o: src/request.c
+src/get.o: src/get.c
+src/set.o: src/set.c
+src/setup.o: src/setup.c
+src/move.o: src/move.c
+src/traffic.o: src/traffic.c
+src/logtraffic.o: src/logtraffic.c
+src/node.o: src/node.c
+src/filter.o: src/filter.c
+lib/fs.o: lib/fs.c
+lib/strings.o: lib/strings.c
+src/bandwidth.o: src/bandwidth.c
+src/trafficlimit.o: src/trafficlimit.c
+src/userbackup.o: src/userbackup.c
+src/task.o: src/task.c
+
+lib/ovcpxml.o: lib/ovcpxml.c
+	$(CC) $(CFLAGS) -fPIC -c lib/ovcpxml.c -o lib/ovcpxml.o
+
+lib/libiptc/libip4tc.o:
+	cd lib/libiptc/; make libip4tc.o;
+
+lib/libiptc/libip6tc.o:
+	cd lib/libiptc/; make libip6tc.o;
+
+lib/pyovcp/ovcp.so:
+	cd lib/pyovcp/; make ovcp.so;
+
+lib/pyovcp/pyovcp.a:
+	cd lib/pyovcp/; make pyovcp.a;
+
+clean:
+	@rm -f $(OBJECTS)
+	@rm -f openvcpd
+	@rm -f lib/pyovcp.o lib/pyovcp.so
+	cd lib/libiptc/; make clean;
+	cd lib/pyovcp; make clean;
+
+install:
+	mkdir -p "$(DESTDIR)/$(datadir)/openvcpd" \
+		"$(DESTDIR)/$(datadir)/openvcpd/extensions" \
+		"$(DESTDIR)/$(bindir)" \
+		"$(DESTDIR)/$(sysconfdir)"
+	cp openvcpd "$(DESTDIR)/$(bindir)"/openvcpd
+	cp extensions/* "$(DESTDIR)/$(datadir)/openvcpd/extensions/"
+
+	@if (test -e "$(DESTDIR)/$(sysconfdir)"/openvcpd.conf); then \
+		echo "Configuration File exists. Please check for updates of the configurationfile"; \
+	else	\
+                cfgdir=`vserver-info 2>&1 | grep 'cfg-Directory:' | awk -F: '{ print $$2 }' | cut -c2-`; \
+                rootdir=`vserver-info 2>&1 | grep 'vserver-Rootdir:' | awk -F: '{ print $$2 }' | cut -c2-`; \
+                rundir=`vserver-info 2>&1 | grep 'pkgstate-Directory:' | awk -F: '{ print $$2 }' | cut -c2-`; \
+                echo "CONF: $$cfgdir, $$rootdir, $$rundir"; \
+                cat openvcpd.conf | sed s#'CONFIGDIR'#$$cfgdir# | sed s#'ROOTDIR'#$$rootdir# | sed s#'RUNDIR'#$$rundir# > $(DESTDIR)/$(sysconfdir)/openvcpd.conf; \
+		echo "Configuration File created ($(sysconfdir)/openvcpd.conf)"; \
+	fi \
+
+uninstall:
+	rm -rf "$(DESTDIR)/$(datadir)"/openvcpd
+	rm -f "$(DESTDIR)/$(bindir)"/openvcpd
+	rm -f "$(DESTDIR)/$(sysconfdir)"/openvcpd.conf

@@ -1,0 +1,142 @@
+{
+   iptc_commit
+   Memcheck:Param
+   socketcall.setsockopt(optval)
+   obj:/lib/ld-2.6.1.so
+   fun:ovcp_create_tables
+   fun:traffic_daemon_processe
+   fun:main
+}
+
+
+{
+   iptables
+   Memcheck:Addr4
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   fun:__libc_dlopen_mode
+   fun:__nss_lookup_function
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   fun:getprotobyname_r
+   fun:getprotobyname
+   fun:parse_protocol
+   fun:do_command
+   fun:main
+}
+
+
+{
+   iptables2
+   Memcheck:Cond
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   fun:__libc_dlopen_mode
+   fun:__nss_lookup_function
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   fun:getprotobyname_r
+   fun:getprotobyname
+   fun:parse_protocol
+   fun:do_command
+}
+
+{
+   iptables3
+   Memcheck:Cond
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   fun:__libc_dlopen_mode
+   fun:__nss_lookup_function
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   fun:getprotobyname_r
+   fun:getprotobyname
+   fun:parse_protocol
+   fun:do_command
+}
+
+{
+   iptables4
+   Memcheck:Addr4
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   fun:__libc_dlopen_mode
+   fun:__nss_lookup_function
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+}
+
+
+{
+   iptables5
+   Memcheck:Addr4
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libdl-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libdl-2.6.1.so
+   fun:dlopen
+   fun:find_target
+   fun:do_command
+}
+
+
+{
+   iptables6
+   Memcheck:Param
+   socketcall.setsockopt(optval)
+   obj:/lib/ld-2.6.1.so
+   fun:main
+}
+
+
+{
+   iptables7
+   Memcheck:Addr4
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   fun:__libc_dlopen_mode
+   fun:__nss_lookup_function
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+   obj:/lib/tls/i686/cmov/libc-2.6.1.so
+}
+
+
+{
+   iptables8
+   Memcheck:Addr4
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libdl-2.6.1.so
+   obj:/lib/ld-2.6.1.so
+   obj:/lib/tls/i686/cmov/libdl-2.6.1.so
+   fun:dlopen
+   fun:find_target
+   fun:do_command
+}

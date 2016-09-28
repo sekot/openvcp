@@ -1,0 +1,27 @@
+OpenVCPD Installation Notes
+-----------------------
+
+INSTALL:
+
+1)	Compilie the Daemon
+	e.g.
+		./configure --prefix=/usr --sysconfdir=/etc
+		To be able to use GnuTLS encryption add --with-gnutls
+		make
+		make install
+
+2)
+	Edit the Config
+	e.g. 
+		vim /etc/openvcpd.conf
+		Change the IP to the one you want the daemon listening on
+
+3)
+	Start the Daemon
+	e.g. 
+		/usr/bin/openvcpd
+
+		or instead
+
+		cp debian/openvcpd.init /etc/init.d/openvcpd
+		/etc/init.d/openvcpd start
